@@ -1,0 +1,54 @@
+# --------------------------------------------------------- #
+# Description of contents of files:                         #
+# parole_freq_1k                                            #
+# parole_freq_10k                                           #
+# parole_freq_50k                                           #
+# parole_freq_100k                                          #
+# parole_freq_1                                             #
+# parole_freq_gt_1                                          #
+# --------------------------------------------------------- #
+
+The files contain different selections from the material 
+described below. 
+
+parole_freq_1k   : the   1000 most common words
+parole_freq_10k  : the  10000 ------ " --------
+parole_freq_50k  : the  50000 ------ " --------
+parole_freq_100k : the 100000 ------ " --------
+parole_freq_1    : all words with frequency 1                (see COMMENT below)
+parole_freq_gt_1 : all words with frequency greater than 1
+
+All files are sorted in frequency order.
+
+The material consists of "every word" from the PAROLE corpus. "Every
+word" means words remaining after the following treatment.
+
+
+As words counts the result of a certain tokenization being
+the base for the PAROLE corpus as shown in 
+(http://spraakbanken.gu.se/lb/parole/). Unfortunately the inner
+workings of this tokenizer isn't documented. 
+
+Tokens containing strings of digits or consisting of interpunction are
+removed before the frequency is calculated and are therefore missing.
+All words are normalized to lower-case.
+
+
+The PAROLE corpus : circa 20 mill. running words modern (1976-1997)
+written text material from different sources . More information (in Swedish): 
+http://spraakbanken.gu.se/lb/parole/
+
+# --------------------------------------------------------- #
+# COMMENT
+# regarding parole_freq_1 :
+  The major part of tokens with frequency=1 are of course
+  "ordinary" low usage words. These include a large amount of 
+	more or less temporary compounds. To be found are also a 
+	significant amount of "oddities" resulting from poor tokenization.
+	Some examples are the "words"
+  "___________________g/km"
+  "---dessa"
+  "-/"
+  "···det"
+# --------------------------------------------------------- #
+

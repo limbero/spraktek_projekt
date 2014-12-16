@@ -1,0 +1,54 @@
+# --------------------------------------------------------- #
+# Beskrivning av innehållet i filerna                       #
+# parole_freq_1k                                            #
+# parole_freq_10k                                           #
+# parole_freq_50k                                           #
+# parole_freq_100k                                          #
+# parole_freq_1                                             #
+# parole_freq_gt_1                                          #
+# --------------------------------------------------------- #
+Filerna innehåller ord från parole-korpusen sorterade i
+frekvensordning.
+
+Filerna är olika urval (enligt följande lista) ur nedan beskrivet material.
+parole_freq_1k   : de   1000  vanligaste orden
+parole_freq_10k  : de  10000 ------ " -------- 
+parole_freq_50k  : de  50000 ------ " -------- 
+parole_freq_100k : de 100000 ------ " -------- 
+parole_freq_1    : alla ord med frekvensen 1                (se f.ö. KOMMENTAR nedan)
+parole_freq_gt_1 : alla ord med frekvens större än 1
+
+Materialet är en statistisk sammanställning av "samtliga ord" från
+PAROLE-korpusen.Med "samtliga ord" menas de ord som kvarstår efter
+nedan beskriven bearbetning.
+
+
+Såsom ord räknas produkten av en viss tokeniseringsprocess som ligger
+till grund för PAROLE-korpusen såsom den visas i Språkbankens söktjänst
+(http://spraakbanken.gu.se/lb/parole/). Detta tokeniseringsförfarande
+är tyvärr inte dokumenterat.
+
+Med token menas i detta sammanhang bl.a. sifferuttryck och
+sekvenser av skiljetecken. Dessa har tagits bort innan
+frekvensberäkningen gjordes, och saknas därför i listan. Vidare har
+alla ord skiftlägesnormaliserats till små bokstäver.
+
+
+PAROLE-materialet är en blandad textkorpus bestående av ca 20 milj.
+löpord av nusvenskt textmaterial (1976-1997). Närmare information om
+PAROLE-korpusen fås på : http://spraakbanken.gu.se/lb/parole/
+
+# --------------------------------------------------------- #
+# KOMMENTAR
+# betr parole_freq_1 :
+  Det stora flertalet av "ord" med frekvensen 1 är förstås
+  "vanliga" ord med låg användningsfrekvens. Av dessa är
+  åtskilliga mer eller mindre tillfälliga sammansättningar.
+  Annars döljer sig i denna grupp diverse "konstigheter". Några
+  exempel är "orden"
+  "___________________g/km"
+  "---dessa"
+  "-/"
+  "···det"
+  Dessa skall betraktas som "rester av dåligt utförd tokenisering"
+# --------------------------------------------------------- #
