@@ -13,6 +13,7 @@ import javax.swing.border.*;
 import java.io.*;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Arrays;
 import java.nio.charset.StandardCharsets;
 
 public class TypeWriter extends JFrame implements KeyListener {
@@ -27,9 +28,11 @@ public class TypeWriter extends JFrame implements KeyListener {
 	JTextArea inputWindow = new JTextArea( "", 2, 28 );    
 	JTextArea outputWindow = new JTextArea( "", 2, 28 );
 	JTextArea decodeWindow = new JTextArea( "", 2, 28 );
+	JTextArea viterbiWindow = new JTextArea( "", 2, 28 );
 	JScrollPane inputPane = new JScrollPane( inputWindow );    
 	JScrollPane outputPane = new JScrollPane( outputWindow );
 	JScrollPane decodePane = new JScrollPane( decodeWindow );
+	JScrollPane viterbiPane = new JScrollPane( viterbiWindow );
 	JButton clearBut = new JButton( "Clear all" );
 	JButton decodeBut = new JButton( "Decode" );
 	Font coorFont = new Font( "Courier", Font.BOLD, 18 );
@@ -46,11 +49,13 @@ public class TypeWriter extends JFrame implements KeyListener {
 		inputWindow.addKeyListener( this );
 		outputWindow.setFont( coorFont );
 		decodeWindow.setFont( coorFont );
+		viterbiWindow.setFont( coorFont );
 		JPanel p = new JPanel();
 		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
 		p.add( inputPane );
 		p.add( outputPane );
 		p.add( decodePane );
+		p.add( viterbiPane );
 		JPanel b = new JPanel();
 		b.setLayout(new BoxLayout(b, BoxLayout.X_AXIS));
 		b.add( clearBut );
@@ -70,6 +75,7 @@ public class TypeWriter extends JFrame implements KeyListener {
 				inputWindow.setText( "" );
 				outputWindow.setText( "" );
 				decodeWindow.setText( "" );
+				viterbiWindow.setText( "" );
 			}
 		};
 		clearBut.addActionListener( clear );
@@ -83,6 +89,7 @@ public class TypeWriter extends JFrame implements KeyListener {
 				String s = scrambled + RandomKey.indexToChar( RandomKey.START_END );
 		    	// Then decode the scrambled string
 				String decoded = d.viterbi( s );
+				String viterbi = decoded;
 
 				System.out.println(decoded);
 
@@ -96,13 +103,26 @@ public class TypeWriter extends JFrame implements KeyListener {
 					int i = 0;
 					while ((word = decoded.split("\\s+")[i]) != null) {
 						ClosestWords closestWords = new ClosestWords(word, wordList);
-						//System.out.print(word + " (" + closestWords.getMinDistance() + ")");
+
+						boolean flag = false;
+
 						for (String w : closestWords.getClosestWords()) {
-							if (w.length() == word.length() && Character.isLowerCase( w.charAt(0) ) ) {
+							if (w.length() == word.length() && Character.isLowerCase( w.charAt(0) ) && possibleWord(w, s.split("\\s+")[i]) ) {
 								decodedreplacer.append(w+" ");
+								flag = true;
 								break;
 							}
 						}
+
+						if (!flag) {
+							for (String w : closestWords.getClosestWords()) {
+								if (w.length() == word.length() && Character.isLowerCase( w.charAt(0) ) ) {
+									decodedreplacer.append(w+" ");
+									break;
+								}
+							}
+						}
+
 						//System.out.println();
 						i++;
 						if(i >= decoded.split("\\s+").length)
@@ -119,11 +139,39 @@ public class TypeWriter extends JFrame implements KeyListener {
 		    	// Compute the quality of the result 
 				int baseline = compare( original, scrambled );
 				int result = compare( original, decoded );
+				int vresult = compare( original, viterbi );
+
 				outputWindow.append( " (" + baseline + "%)" );
-				decodeWindow.setText( decoded + " (" + result + "%)" );
+				decodeWindow.setText( decoded + " (" + result + "%) - Vår algoritm" );
+				viterbiWindow.setText( viterbi + " (" + vresult + "%) - Viterbi" );
 			}
 		};
 		decodeBut.addActionListener( decode );
+	}
+
+	/*Check if word matches possible pressed keys*/
+	public boolean possibleWord(String word, String scrambledWord) {
+		System.out.println(word);
+		System.out.println(scrambledWord);
+
+		for (int i = 0; i < word.length(); i++) {
+			int index = rand.charToIndex( scrambledWord.charAt(i) );
+
+			System.out.println( Arrays.toString(rand.neighbour[index]) );
+			
+			boolean flag = false;
+			for (int j = 0; j < rand.neighbour[index].length; j++)
+				if(rand.neighbour[index][j] == word.charAt(i))
+					flag = true;
+			
+			if (scrambledWord.charAt(i) == word.charAt(i))
+				flag = true;
+
+			if (!flag)
+				return false;
+		}
+
+		return true;
 	}
 
 	/** Handle the key typed event from the text field. */

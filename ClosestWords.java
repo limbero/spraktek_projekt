@@ -7,7 +7,9 @@ import java.lang.Math;
 
 public class ClosestWords {
 
-    LinkedList<String> closestWords = null;
+    int maxdist = 10;
+    LinkedList<String>[] closestWords = new LinkedList[maxdist];
+
     int[][] mymatrix;
     int closestDistance = 40;
 
@@ -70,6 +72,10 @@ public class ClosestWords {
             mymatrix[0][i] = i;
         }
 
+
+        for (int i = 0; i < maxdist; i++)
+            closestWords[i] = new LinkedList<String>();
+
         for (String s : wordList) {
 
             int p=0;
@@ -87,13 +93,16 @@ public class ClosestWords {
             int dist = Distance(w, s, p);
 
             //System.out.println("d(" + w + "," + s + ")=" + dist);
-            if (dist < closestDistance) {
+            /*if (dist < closestDistance) {
                 closestDistance = dist;
                 closestWords = new LinkedList<String>();
                 closestWords.add(s);
             }
             else if (dist == closestDistance) {
                 closestWords.add(s);
+            }*/
+            if (dist < maxdist) {
+                closestWords[dist].add(s);
             }
         }
     }
@@ -103,6 +112,11 @@ public class ClosestWords {
     }
 
     List<String> getClosestWords() {
-        return closestWords;
+        LinkedList<String> listToReturn = new LinkedList<String>();
+        for (int i = 0; i < maxdist; i++)
+            for (String w : closestWords[i])
+                listToReturn.add(w);
+
+        return listToReturn;
     }
 }
